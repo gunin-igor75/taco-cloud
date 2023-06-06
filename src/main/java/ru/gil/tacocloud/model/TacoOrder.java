@@ -5,12 +5,18 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import org.hibernate.validator.constraints.CreditCardNumber;
+import ru.gil.tacocloud.validation.ValidationCity;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class TacoOrder {
+public class TacoOrder{
+
+    private Long id;
+
+    private LocalDate placedAt;
 
     @NotBlank(message = "Delivery name is required")
     private String deliveryName;
@@ -19,6 +25,7 @@ public class TacoOrder {
     private String deliveryStreet;
 
     @NotBlank(message = "City is required")
+    @ValidationCity(cities = {"Omsk, Tara"})
     private String deliveryCity;
 
     @NotBlank(message = "State is required")
@@ -31,11 +38,11 @@ public class TacoOrder {
     private String ccNumber;
 
     @Pattern(regexp = "\"^(0[1-9]|1[0-2])([\\\\/])([2-9][0-9])$\"",
-    message = "Must be formatted MM/YY")
+            message = "Must be formatted MM/YY")
     private String ccExpiration;
 
     @Digits(integer = 3, fraction = 0,
-    message = "Invalid CVV")
+            message = "Invalid CVV")
     private String ccCVV;
 
     private List<Taco> tacos = new ArrayList<>();
