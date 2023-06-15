@@ -31,8 +31,8 @@ public class JdbcOrderRepository implements OrderRepository {
         PreparedStatementCreatorFactory factory =
                 new PreparedStatementCreatorFactory(
                         "insert into taco_order"
-                                + "(delivery_name, delivery_street, delivery_city"
-                                + "delivery_state, delivery_zip, cc_number,  cc_expiration"
+                                + "(delivery_name, delivery_street, delivery_city,"
+                                + "delivery_state, delivery_zip, cc_number, cc_expiration,"
                                 + "cc_cVV, placed_at)"
                                 + "values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
                         Types.VARCHAR, Types.VARCHAR, Types.VARCHAR,
@@ -57,9 +57,10 @@ public class JdbcOrderRepository implements OrderRepository {
         );
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcOperations.update(creator, keyHolder);
-        long orderId = Objects.requireNonNull(keyHolder.getKey()).longValue();
+        long orderId = getKeyId(keyHolder);
         order.setId(orderId);
         List<Taco> tacos = order.getTacos();
+//        System.out.println(tacos);
         int i = 0;
         for (Taco taco : tacos) {
             saveTaco(orderId, i++, taco);
@@ -87,7 +88,7 @@ public class JdbcOrderRepository implements OrderRepository {
                 );
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcOperations.update(creator, keyHolder);
-        long tacoId = Objects.requireNonNull(keyHolder.getKey()).longValue();
+        long tacoId = getKeyId(keyHolder);
         taco.setId(tacoId);
         saveIngredientRefs(tacoId, taco.getIngredients());
         return tacoId;
@@ -103,5 +104,15 @@ public class JdbcOrderRepository implements OrderRepository {
                     ingredient.getId(), tacoId, key++
             );
         }
+    }
+
+    private long getKeyId(GeneratedKeyHolder keyHolder) {
+        long orderId;
+        if (Objects.requireNonNull(keyHolder.getKeys()).size() > 1) {
+            orderId = (Long) keyHolder.getKeys().get("id");
+        } else {
+            orderId = Objects.requireNonNull(keyHolder.getKey()).longValue();
+        }
+        return orderId;
     }
 }

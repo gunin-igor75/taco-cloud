@@ -20,6 +20,6 @@ values ('CHED', 'Cheddar', 'CHEESE');
 insert into ingredient (id, name, type)
 values ('JACK', 'Monterrey Jack', 'CHEESE');
 insert into ingredient (id, name, type)
-values ('SLSA', 'Salsa', 'SAUCE’');
+values ('SLSA', 'Salsa', 'SAUCE');
 insert into ingredient (id, name, type)
 values ('SRCR', 'Sour Cream','SAUCE');

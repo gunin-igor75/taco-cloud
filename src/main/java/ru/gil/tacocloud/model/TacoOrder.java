@@ -25,7 +25,7 @@ public class TacoOrder{
     private String deliveryStreet;
 
     @NotBlank(message = "City is required")
-    @ValidationCity(cities = {"Omsk, Tara"})
+    @ValidationCity(cities = {"Omsk", "Tara"})
     private String deliveryCity;
 
     @NotBlank(message = "State is required")
@@ -37,7 +37,7 @@ public class TacoOrder{
     @CreditCardNumber(message = "Not a valid credit card number")
     private String ccNumber;
 
-    @Pattern(regexp = "\"^(0[1-9]|1[0-2])([\\\\/])([2-9][0-9])$\"",
+    @Pattern(regexp = "(0[1-9]|1[0-2])(/)([2-9][0-9])",
             message = "Must be formatted MM/YY")
     private String ccExpiration;
 
