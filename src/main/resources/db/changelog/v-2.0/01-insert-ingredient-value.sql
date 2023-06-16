@@ -3,6 +3,8 @@ delete from taco;
 delete from taco_order;
 delete from ingredient;
 
+GO
+
 insert into ingredient (id, name, type)
 values ('FLTO', 'Flour Tortilla', 'WRAP');
 insert into ingredient (id, name, type)
@@ -23,3 +25,5 @@ insert into ingredient (id, name, type)
 values ('SLSA', 'Salsa', 'SAUCE');
 insert into ingredient (id, name, type)
 values ('SRCR', 'Sour Cream','SAUCE');
+
+GO
