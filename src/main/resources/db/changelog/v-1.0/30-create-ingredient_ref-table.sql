@@ -1,10 +1,10 @@
 create table if not exists ingredient_ref
 (
-    ingredient varchar(4) not null,
-    taco bigint not null,
-    PRIMARY KEY (taco, ingredient),
-    CONSTRAINT ingredient_id FOREIGN KEY(ingredient) REFERENCES ingredient(id),
-    CONSTRAINT taco_id FOREIGN KEY(taco) REFERENCES taco(id)
+    ingredient_id varchar(4) NOT NULL,
+    taco_id bigint NOT NULL,
+    PRIMARY KEY (ingredient_id, taco_id),
+    CONSTRAINT ingredientId FOREIGN KEY (ingredient_id) REFERENCES ingredient(id),
+    CONSTRAINT tacoId FOREIGN KEY(taco_id) REFERENCES taco(taco_id)
 );
 
 GO

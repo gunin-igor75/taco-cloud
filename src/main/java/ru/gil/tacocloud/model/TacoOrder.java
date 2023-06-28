@@ -7,19 +7,17 @@ import lombok.Data;
 import org.hibernate.validator.constraints.CreditCardNumber;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.MappedCollection;
-import org.springframework.data.relational.core.mapping.Table;
 import ru.gil.tacocloud.validation.ValidationCity;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
-@Table
 public class TacoOrder {
 
     @Id
-    private Long id;
+    private Long tacoOrderId;
 
     private LocalDate placedAt;
 
@@ -50,8 +48,8 @@ public class TacoOrder {
             message = "Invalid CVV")
     private String ccCVV;
 
-    @MappedCollection(idColumn = "taco_order")
-    private List<Taco> tacos = new ArrayList<>();
+    @MappedCollection(idColumn = "taco_order_id")
+    private Set<Taco> tacos = new HashSet<>();
 
     public void addTaco(Taco taco) {
         tacos.add(taco);

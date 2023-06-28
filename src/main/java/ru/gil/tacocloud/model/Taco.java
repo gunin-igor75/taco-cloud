@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.MappedCollection;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -13,11 +14,11 @@ import java.util.List;
 import java.util.Set;
 
 @Data
-@Table
+@Table("taco")
 public class Taco {
 
     @Id
-    private Long id;
+    private Long tacoId;
 
     private LocalDate createdAt = LocalDate.now();
 
@@ -27,6 +28,7 @@ public class Taco {
 
     @NotNull
     @Size(min = 1, message = "You must choose at least 1 ingredient")
+    @Transient
     private List<Ingredient> ingredients;
 
     @MappedCollection(idColumn = "taco_id")

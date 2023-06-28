@@ -7,10 +7,10 @@ import ru.gil.tacocloud.model.Ingredient;
 import ru.gil.tacocloud.model.Taco;
 import ru.gil.tacocloud.model.TacoOrder;
 import ru.gil.tacocloud.repository.TacoOrderRepository;
-import ru.gil.tacocloud.repository.TacoRepository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 @RequiredArgsConstructor
@@ -18,18 +18,16 @@ public class TacoOrderServiceImp implements TacoOrderService{
 
     private final TacoOrderRepository orderRepository;
 
-    private final TacoRepository tacoRepository;
 
     @Override
     @Transactional
     public void createTacoOrder(TacoOrder order) {
-        List<Taco> tacos = order.getTacos();
+        order.setPlacedAt(LocalDate.now());
+        Set<Taco> tacos = order.getTacos();
         for (Taco taco : tacos) {
             List<Ingredient> ingredients = taco.getIngredients();
-            taco.setCreatedAt(LocalDate.now());
             ingredients.forEach(taco::addIngredient);
         }
-        order.setPlacedAt(LocalDate.now());
         orderRepository.save(order);
     }
 }
