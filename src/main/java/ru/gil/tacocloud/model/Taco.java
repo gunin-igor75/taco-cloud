@@ -4,8 +4,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.MappedCollection;
-import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -13,7 +11,6 @@ import java.util.List;
 import java.util.Set;
 
 @Data
-@Table
 public class Taco {
 
     @Id
@@ -29,7 +26,6 @@ public class Taco {
     @Size(min = 1, message = "You must choose at least 1 ingredient")
     private List<Ingredient> ingredients;
 
-    @MappedCollection(idColumn = "taco_id")
     private Set<IngredientRef> ingredientRefs = new HashSet<>();
 
     public void addIngredient(Ingredient ingredient) {
