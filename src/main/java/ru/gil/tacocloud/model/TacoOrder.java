@@ -1,24 +1,29 @@
 package ru.gil.tacocloud.model;
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.hibernate.validator.constraints.CreditCardNumber;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.MappedCollection;
-import org.springframework.data.relational.core.mapping.Table;
 import ru.gil.tacocloud.validation.ValidationCity;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-@Data
-@Table
+@Getter
+@Setter
+@RequiredArgsConstructor
+@Entity
+@Table(name = "taco_order")
 public class TacoOrder {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private LocalDate placedAt;
@@ -50,10 +55,31 @@ public class TacoOrder {
             message = "Invalid CVV")
     private String ccCVV;
 
-    @MappedCollection(idColumn = "taco_order")
+    @OneToMany(mappedBy = "tacoOrder", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Taco> tacos = new ArrayList<>();
 
-    public void addTaco(Taco taco) {
-        tacos.add(taco);
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TacoOrder tacoOrder = (TacoOrder) o;
+        return Objects.equals(id, tacoOrder.id);
+    }
+
+    @Override
+    public final int hashCode() {
+        return getClass().hashCode();
+    }
+
+    public void addTaco(Taco ... tacos) {
+        for (Taco taco : tacos) {
+            taco.setTacoOrder(this);
+            this.tacos.add(taco);
+        }
+    }
+
+    public void removeTaco(Taco taco) {
+        this.tacos.remove(taco);
+        taco.setTacoOrder(null);
     }
 }

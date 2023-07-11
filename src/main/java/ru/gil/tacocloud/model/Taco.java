@@ -1,22 +1,26 @@
 package ru.gil.tacocloud.model;
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
-import org.springframework.data.annotation.Id;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.Objects;
 
-@Data
+@Getter
+@Setter
+@Entity
+@Table(name = "taco")
 public class Taco {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDate createdAt = LocalDate.now();
+    private LocalDate createdAt;
 
     @NotNull
     @Size(min = 5, message = "Name must be at least 5 characters long")
@@ -24,11 +28,40 @@ public class Taco {
 
     @NotNull
     @Size(min = 1, message = "You must choose at least 1 ingredient")
+
+    @ManyToMany
+    @JoinTable(name = "ingredient_ref",
+    joinColumns = @JoinColumn(name = "taco"),
+    inverseJoinColumns = @JoinColumn(name = "ingredient"))
     private List<Ingredient> ingredients;
 
-    private Set<IngredientRef> ingredientRefs = new HashSet<>();
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "taco_order")
+    private TacoOrder tacoOrder;
 
-    public void addIngredient(Ingredient ingredient) {
-        ingredientRefs.add(new IngredientRef(ingredient.getId()));
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Taco taco = (Taco) o;
+        return Objects.equals(id, taco.id);
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    public void addIngredient(Ingredient... ingredients) {
+        for (Ingredient ingredient : ingredients) {
+            this.ingredients.add(ingredient);
+            ingredient.getTacos().add(this);
+        }
+    }
+
+    public void removeIngredient(Ingredient ingredient) {
+        this.ingredients.remove(ingredient);
+        ingredient.getTacos().remove(this);
+    }
+
 }
