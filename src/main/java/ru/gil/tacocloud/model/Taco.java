@@ -1,24 +1,32 @@
 package ru.gil.tacocloud.model;
 
+import com.datastax.oss.driver.api.core.uuid.Uuids;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.MappedCollection;
-import org.springframework.data.relational.core.mapping.Table;
+import lombok.NoArgsConstructor;
+import org.springframework.data.cassandra.core.cql.Ordering;
+import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
+import org.springframework.data.cassandra.core.mapping.Column;
+import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
+import org.springframework.data.cassandra.core.mapping.Table;
+import ru.gil.tacocloud.service.TacoUDRUtils;
 
 import java.time.LocalDate;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+import java.util.UUID;
 
 @Data
-@Table
+@Table("tacos")
+@NoArgsConstructor
 public class Taco {
 
-    @Id
-    private Long id;
+    @PrimaryKeyColumn(type = PrimaryKeyType.PARTITIONED)
+    private UUID id = Uuids.timeBased();
 
+    @PrimaryKeyColumn(type = PrimaryKeyType.CLUSTERED,
+    ordering = Ordering.DESCENDING)
     private LocalDate createdAt = LocalDate.now();
 
     @NotNull
@@ -27,12 +35,16 @@ public class Taco {
 
     @NotNull
     @Size(min = 1, message = "You must choose at least 1 ingredient")
-    private List<Ingredient> ingredients;
+    @Column("ingredients")
+    private List<IngredientUDT> ingredients = new ArrayList<>();
 
-    @MappedCollection(idColumn = "taco_id")
-    private Set<IngredientRef> ingredientRefs = new HashSet<>();
+
+    public Taco(String name, List<IngredientUDT> ingredients) {
+        this.name = name;
+        this.ingredients = ingredients;
+    }
 
     public void addIngredient(Ingredient ingredient) {
-        ingredientRefs.add(new IngredientRef(ingredient.getId()));
+        this.ingredients.add(TacoUDRUtils.toIngredientUDT(ingredient));
     }
 }

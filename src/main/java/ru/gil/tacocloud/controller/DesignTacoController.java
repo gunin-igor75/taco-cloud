@@ -12,6 +12,7 @@ import ru.gil.tacocloud.model.Ingredient;
 import ru.gil.tacocloud.model.Ingredient.Type;
 import ru.gil.tacocloud.model.Taco;
 import ru.gil.tacocloud.model.TacoOrder;
+import ru.gil.tacocloud.service.TacoUDRUtils;
 
 import java.util.List;
 
@@ -59,7 +60,7 @@ public class DesignTacoController {
         if (errors.hasErrors()) {
             return "design";
         }
-        tacoOrder.addTaco(taco);
+        tacoOrder.addTaco(TacoUDRUtils.toTacoUDT(taco));
         log.info("Processing taco: {}", taco);
         return "redirect:/orders/current";
     }

@@ -3,9 +3,7 @@ package ru.gil.tacocloud.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import ru.gil.tacocloud.model.Ingredient;
-import ru.gil.tacocloud.model.Taco;
-import ru.gil.tacocloud.model.TacoOrder;
+import ru.gil.tacocloud.model.*;
 import ru.gil.tacocloud.repository.TacoOrderRepository;
 import ru.gil.tacocloud.repository.TacoRepository;
 
@@ -23,10 +21,10 @@ public class TacoOrderServiceImp implements TacoOrderService{
     @Override
     @Transactional
     public void createTacoOrder(TacoOrder order) {
+        List<TacoUDT> tacos = order.getTacos();
         List<Taco> tacos = order.getTacos();
         for (Taco taco : tacos) {
-            List<Ingredient> ingredients = taco.getIngredients();
-            taco.setCreatedAt(LocalDate.now());
+            List<IngredientUDT> ingredients = taco.getIngredients();
             ingredients.forEach(taco::addIngredient);
         }
         order.setPlacedAt(LocalDate.now());

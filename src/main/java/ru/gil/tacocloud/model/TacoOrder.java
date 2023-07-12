@@ -1,25 +1,30 @@
 package ru.gil.tacocloud.model;
 
+import com.datastax.oss.driver.api.core.uuid.Uuids;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import org.hibernate.validator.constraints.CreditCardNumber;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.MappedCollection;
-import org.springframework.data.relational.core.mapping.Table;
+import org.springframework.data.cassandra.core.mapping.Column;
+import org.springframework.data.cassandra.core.mapping.PrimaryKey;
+import org.springframework.data.cassandra.core.mapping.Table;
 import ru.gil.tacocloud.validation.ValidationCity;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Data
-@Table
-public class TacoOrder {
+@Table("orders")
+public class TacoOrder implements Serializable {
 
-    @Id
-    private Long id;
+    private static final long serialVersionUID = 1L;
+
+    @PrimaryKey
+    private UUID id = Uuids.timeBased();
 
     private LocalDate placedAt;
 
@@ -50,10 +55,10 @@ public class TacoOrder {
             message = "Invalid CVV")
     private String ccCVV;
 
-    @MappedCollection(idColumn = "taco_order")
-    private List<Taco> tacos = new ArrayList<>();
+    @Column("tacos")
+    private List<TacoUDT> tacos = new ArrayList<>();
 
-    public void addTaco(Taco taco) {
+    public void addTaco(TacoUDT taco) {
         tacos.add(taco);
     }
 }

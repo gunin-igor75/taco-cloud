@@ -6,28 +6,19 @@ spring:
   thymeleaf:
     cache: false
 
-  datasource:
-    url: jdbc:postgresql://${HOST}:5432/${POSTGRES_DATABASE}
-    username: ${POSTGRES_USERNAME}
-    password: ${POSTGRES_PASSWORD}
-    driver-class-name: org.postgresql.Driver
-
-  jpa:
-    properties:
-      hibernate:
-        database-platform: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
-    hibernate:
-      ddl-auto: validate
-    open-in-view: false
-    defer-datasource-initialization: true
-
   sql:
     init:
       mode: never
 
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.xml
+    enabled: false
+
+  cassandra:
+    keyspace-name: tacocloud
+    local-datacenter: datacenter1
+    username: ${USERNAME}
+    password: ${PASSWORD}
 
 server:
-  port: 8081
+  port: 8080

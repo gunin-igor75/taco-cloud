@@ -1,55 +1,28 @@
 package ru.gil.tacocloud.model;
 
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.PersistenceCreator;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.domain.Persistable;
-import org.springframework.data.relational.core.mapping.Table;
+import lombok.NoArgsConstructor;
+import org.springframework.data.cassandra.core.mapping.PrimaryKey;
+import org.springframework.data.cassandra.core.mapping.Table;
 
 
 @Data
-@Table("ingredient")
-public class Ingredient  implements Persistable<String> {
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
+@Table("ingredients")
+public class Ingredient{
 
-    @Id
+    @PrimaryKey
     private final String id;
 
     private final String name;
 
     private final Type type;
 
-    @Transient
-    private final boolean isNew;
-
-
-
-
-    public Ingredient(String id, String name, Type type, boolean isNew) {
-        this.id = id;
-        this.name = name;
-        this.type = type;
-        this.isNew = isNew;
-    }
-
-    @PersistenceCreator
-    public Ingredient(String id, String name, Type type) {
-        this(id, name, type, false);
-    }
-
-    @Override
-    public String getId() {
-        return id;
-    }
-
-    @Override
-    public boolean isNew() {
-        return isNew;
-    }
-
     public enum Type {
         WRAP, PROTEIN, VEGGIES, CHEESE, SAUCE;
     }
-
 }
