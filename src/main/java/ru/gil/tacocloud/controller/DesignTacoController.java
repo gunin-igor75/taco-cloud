@@ -12,6 +12,7 @@ import ru.gil.tacocloud.model.Ingredient;
 import ru.gil.tacocloud.model.Ingredient.Type;
 import ru.gil.tacocloud.model.Taco;
 import ru.gil.tacocloud.model.TacoOrder;
+import ru.gil.tacocloud.repository.TacoRepository;
 import ru.gil.tacocloud.service.TacoUDRUtils;
 
 import java.util.List;
@@ -27,6 +28,8 @@ import static ru.gil.tacocloud.model.Ingredient.Type.values;
 public class DesignTacoController {
 
     private final IngredientRepository ingredientRepo;
+
+    private final TacoRepository tacoRepo;
 
     @ModelAttribute
     public void addIngredientToModel(Model model) {
@@ -60,7 +63,8 @@ public class DesignTacoController {
         if (errors.hasErrors()) {
             return "design";
         }
-        tacoOrder.addTaco(TacoUDRUtils.toTacoUDT(taco));
+        Taco newTaco = tacoRepo.save(taco);
+        tacoOrder.addTaco(TacoUDRUtils.toTacoUDT(newTaco));
         log.info("Processing taco: {}", taco);
         return "redirect:/orders/current";
     }
