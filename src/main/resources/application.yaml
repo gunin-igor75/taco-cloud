@@ -6,28 +6,16 @@ spring:
   thymeleaf:
     cache: false
 
-  datasource:
-    url: jdbc:postgresql://${HOST}:5432/${POSTGRES_DATABASE}
-    username: ${POSTGRES_USERNAME}
-    password: ${POSTGRES_PASSWORD}
-    driver-class-name: org.postgresql.Driver
 
-  jpa:
-    properties:
-      hibernate:
-        database-platform: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
-    hibernate:
-      ddl-auto: validate
-    open-in-view: false
-    defer-datasource-initialization: true
+  data:
+    mongodb:
+      host: ${HOST}
+      port: 27017
+      username: ${USERNAME}
+      password: ${PASSWORD}
+      database: ${DATABASE}
 
-  sql:
-    init:
-      mode: never
 
-  liquibase:
-    change-log: classpath:db/changelog/db.changelog-master.xml
 
-server:
-  port: 8081
+
+

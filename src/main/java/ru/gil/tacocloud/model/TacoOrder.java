@@ -6,20 +6,22 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import org.hibernate.validator.constraints.CreditCardNumber;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.MappedCollection;
-import org.springframework.data.relational.core.mapping.Table;
+import org.springframework.data.mongodb.core.mapping.Document;
 import ru.gil.tacocloud.validation.ValidationCity;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Table
-public class TacoOrder {
+@Document
+public class TacoOrder implements Serializable {
+
+    private static final long SERIAL_VERSION_UID = 1L;
 
     @Id
-    private Long id;
+    private String id;
 
     private LocalDate placedAt;
 
@@ -50,7 +52,6 @@ public class TacoOrder {
             message = "Invalid CVV")
     private String ccCVV;
 
-    @MappedCollection(idColumn = "taco_order")
     private List<Taco> tacos = new ArrayList<>();
 
     public void addTaco(Taco taco) {
