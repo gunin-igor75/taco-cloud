@@ -1,53 +1,37 @@
 package ru.gil.tacocloud.model;
 
 
-import lombok.Data;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.PersistenceCreator;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.domain.Persistable;
-import org.springframework.data.relational.core.mapping.Table;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.Set;
 
 
-@Data
-@Table("ingredient")
-public class Ingredient  implements Persistable<String> {
+@Getter
+@Setter
+@Entity
+@Table(name = "ingredient")
+public class Ingredient{
 
     @Id
-    private final String id;
+    private  String id;
 
-    private final String name;
+    private  String name;
 
-    private final Type type;
+    @Enumerated(EnumType.STRING)
+    private  Type type;
 
-    @Transient
-    private final boolean isNew;
+    @ManyToMany(mappedBy = "ingredients")
+    private Set<Taco> tacos;
+    public Ingredient() {
+    }
 
-
-
-
-    public Ingredient(String id, String name, Type type, boolean isNew) {
+    public Ingredient(String id, String name, Type type) {
         this.id = id;
         this.name = name;
         this.type = type;
-        this.isNew = isNew;
     }
-
-    @PersistenceCreator
-    public Ingredient(String id, String name, Type type) {
-        this(id, name, type, false);
-    }
-
-    @Override
-    public String getId() {
-        return id;
-    }
-
-    @Override
-    public boolean isNew() {
-        return isNew;
-    }
-
     public enum Type {
         WRAP, PROTEIN, VEGGIES, CHEESE, SAUCE;
     }
