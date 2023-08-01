@@ -58,6 +58,10 @@ public class TacoOrder {
     @OneToMany(mappedBy = "tacoOrder", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Taco> tacos = new ArrayList<>();
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private Users users;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
