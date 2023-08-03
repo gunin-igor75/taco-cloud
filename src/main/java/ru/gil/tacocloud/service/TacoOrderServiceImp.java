@@ -1,10 +1,12 @@
 package ru.gil.tacocloud.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.gil.tacocloud.model.Taco;
 import ru.gil.tacocloud.model.TacoOrder;
+import ru.gil.tacocloud.model.Users;
 import ru.gil.tacocloud.repository.TacoOrderRepository;
 
 import java.time.LocalDate;
@@ -24,5 +26,11 @@ public class TacoOrderServiceImp implements TacoOrderService{
         tacos.forEach(taco -> taco.setCreatedAt(LocalDate.now()));
         order.setPlacedAt(LocalDate.now());
         orderRepository.save(order);
+    }
+
+    @Override
+    @Transactional
+    public List<TacoOrder> getTacoOrdersForUser(Users user, Pageable pageable) {
+        return orderRepository.findByUsersOrderByPlacedAtDesc(user, pageable);
     }
 }
