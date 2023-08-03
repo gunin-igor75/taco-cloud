@@ -2,6 +2,7 @@ package ru.gil.tacocloud.controller;
 
 import jakarta.validation.Valid;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,10 +20,10 @@ import static ru.gil.tacocloud.model.Ingredient.Type.values;
 
 
 @Slf4j
-@Data
 @RequestMapping("/design")
 @SessionAttributes("tacoOrder")
 @Controller
+@RequiredArgsConstructor
 public class DesignTacoController {
 
     private final IngredientRepository ingredientRepo;
@@ -33,7 +34,7 @@ public class DesignTacoController {
         Type[] types = values();
         for (Type type : types) {
             String nameType = type.toString().toLowerCase();
-            List<Ingredient>  ingredientsByType = filterByType(ingredients, type);
+            List<Ingredient> ingredientsByType = filterByType(ingredients, type);
             model.addAttribute(nameType, ingredientsByType);
         }
     }

@@ -24,6 +24,7 @@ public class OrderController {
 
     private final TacoOrderService tacoOrderService;
 
+
     @GetMapping("/current")
     public String orderForm() {
         return "orderForm";
@@ -38,6 +39,7 @@ public class OrderController {
             return "orderForm";
         }
         tacoOrder.setUsers(user);
+
         tacoOrderService.createTacoOrder(tacoOrder);
         log.info("Order submitted {}", tacoOrder);
         sessionStatus.setComplete();
