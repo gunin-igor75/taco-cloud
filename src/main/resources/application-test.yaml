@@ -1,0 +1,28 @@
+taco:
+  orders:
+    pageSize: 10
+
+spring:
+
+  liquidise:
+    enabled: false
+
+  thymeleaf:
+    cache: false
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/test
+    username: user
+    password: user
+    driver-class-name: org.postgresql.Driver
+
+
+
+  sql:
+    init:
+      mode: always
+
+
+
+server:
+  port: 8081

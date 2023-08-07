@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -30,6 +32,7 @@ public class Taco {
     @Size(min = 1, message = "You must choose at least 1 ingredient")
 
     @ManyToMany
+    @Fetch(FetchMode.JOIN)
     @JoinTable(name = "ingredient_ref",
     joinColumns = @JoinColumn(name = "taco"),
     inverseJoinColumns = @JoinColumn(name = "ingredient"))
