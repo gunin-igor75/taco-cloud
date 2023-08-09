@@ -6,7 +6,9 @@ import ru.gil.tacocloud.model.Taco;
 import java.util.List;
 
 public interface TacoService {
-    void createTaco(Taco taco);
+    Taco createTaco(Taco taco);
 
     List<Taco> findAll(PageRequest page);
+
+    Taco findById(long id);
 }

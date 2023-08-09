@@ -10,7 +10,8 @@ values ('igor', '$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i', 
 
 insert into taco_order (delivery_name, delivery_street, delivery_city,  delivery_state, delivery_zip,
     cc_number,cc_expiration, cccvv, placed_at, user_id)
-values ('taco-order-first', '10 лет Октября', 'Omsk',  'Омская обоасть', '644070', '4627100101654724','12/24', '555',  '2023-08-06', 1),;
+values ('taco-order-first', '10 лет Октября', 'Omsk',  'Омская обоасть', '644070', '4627100101654724','12/24', '555',  '2023-08-06', 1),
+ ('taco-order-second', '10 лет Октября', 'Omsk',  'Омская обоасть', '644070', '4627100101654724','12/24', '555',  '2023-08-07', 1);
 
 
 insert into taco(name, taco_order, created_at)
@@ -19,4 +20,4 @@ values ('first_taco', 1, '2023-08-06'),
 
 insert into ingredient_ref(ingredient, taco)
 values('FLTO',1), ('GRBF', 1), ('TMTO', 1),
-('FLTO',1), ('CARN', 1), ('TMTO', 1);
+('FLTO',2), ('CARN', 2), ('JACK', 2);
