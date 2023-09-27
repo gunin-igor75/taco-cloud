@@ -1,5 +1,6 @@
 package ru.gil.tacocloud.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
@@ -20,6 +21,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Entity
 @Table(name = "taco_order")
+@JsonIgnoreProperties(value = {"tacos"})
 public class TacoOrder {
 
     @Id

@@ -7,7 +7,13 @@ import ru.gil.tacocloud.model.Users;
 import java.util.List;
 
 public interface TacoOrderService {
-    void createTacoOrder(TacoOrder order);
+    TacoOrder createTacoOrder(TacoOrder order);
 
     List<TacoOrder> getTacoOrdersForUser(Users user, Pageable pageable);
+
+    TacoOrder findByIdTacoOrder(long id);
+
+    TacoOrder editTacoOrder(TacoOrder tacoOrder);
+
+    void deleteTacoOrder(Long id);
 }
